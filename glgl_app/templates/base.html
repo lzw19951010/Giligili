@@ -1,0 +1,24 @@
+<!doctype>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>giligili{% block title %}{% endblock %}</title>
+    <!--<link rel="stylesheet" type="text/css" href="/static/styles/base.css"/>
+    {% block extracss %}{% endblock %}-->
+</head>
+<body>
+<div class = "General">Hello,{{user.username}}</div>
+{% if user.is_authenticated %}
+<a href = "/logout">Logout</a>
+{% else %}
+<a href = "/login">Login</a>
+<a href = "/register">Register</a>
+{% endif %}
+
+{% block content %}
+
+{% endblock %}
+<div>Body footer.</div>
+</body>
+</html>

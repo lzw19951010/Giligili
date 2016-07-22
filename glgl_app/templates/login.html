@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}login{% endblock %}
+
+{% block content %}
+
+<form class="form-base" onsubmit="return check(this)" action="/login/" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="m-row">
+		<label for="id_username">用户名:</label>
+		<input type="text" placeholder="Username" maxlength="50"
+			   name="username" value="{{ username }}">
+	</div>
+	
+	<div class="m-row">
+		<label for="id_password">密码:</label>
+		<input type="password" placeholder="不少于6个字符" name="password"
+			   maxlength="128">
+	</div>
+
+	<input type="submit" value="登陆">
+
+	<div class="m-row">
+		{{ context }}
+	</div>
+</form>
+
+{% endblock %}

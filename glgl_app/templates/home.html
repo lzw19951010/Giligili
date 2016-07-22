@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}home{% endblock %}
+
+{% block content %}
+<div>username: {{user.username}}</div>
+<div>nickname: {{user.nickname}}</div>
+<div>email: {{user.email}}</div>
+<div>description: {{user.discription}}</div>
+<a href = "/">Return.</a>
+{% endblock %}
