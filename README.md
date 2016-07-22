@@ -1,2 +1,3 @@
-giligili: an online video website\nJust for term project:D
+giligili: an online video website
+Just for term project:D
 
