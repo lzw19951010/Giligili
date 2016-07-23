@@ -70,7 +70,7 @@ def register(request, error_msg=""):
 			thisProfile.save()
 			return HttpResponseRedirect("/")
 		if not input_is_valid :
-			return render(request, "register.html", {'error': error_msg, 'username': username, 'nickname': nickname, 'email': email, 'description': description})
+			return render(request, "register.html", {'error': error_msg, 'username': username, 'nickname': nickname, 'email': email})
 	else:
 		return render(request, "register.html")
 
@@ -84,12 +84,20 @@ def profile(request, error_msg=''):
 			user = auth.authenticate(username=username, password=password1)
 			if user is not None:
 				if user.is_active:
-					profile = user.userextraprofile
-					profile.UNickName = nickname
-					profile.UDescription = description
-					profile.save()
-					#更改个人信息
-					return render(request, "home.html", {'context': '信息更改成功'})
+					input_is_valid = False
+					if not nickname:
+						error_msg = "请输入昵称"
+					elif not description:
+						error_msg = "请输入个人描述"
+					elif:
+						input_is_valid = True
+						profile = user.userextraprofile
+						profile.UNickName = nickname
+						profile.UDescription = description
+						profile.save()
+						return render(request, "home.html", {'context': '信息更改成功'})
+					if not input_is_valid :
+						return render(request, "home.html", {'error': error_msg})
 				else:
 					error_msg = '该用户无法正常使用'
 					return render(request, "home.html", {'context': error_msg})
