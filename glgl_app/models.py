@@ -67,6 +67,8 @@ def register(request, error_msg=""):
 			input_is_valid = True
 			user = User.objects.create_user(username = username, password = password1, email = email)
 			user.save()
+			thisProfile = UserExtraProfile(user = user, UNickName = nickname, UDescription = description)
+			thisProfile.save()
 			print('saved')
 			return HttpResponseRedirect("/")
 		if not input_is_valid :
