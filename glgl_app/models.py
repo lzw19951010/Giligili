@@ -38,7 +38,6 @@ def register(request, error_msg=""):
 		nickname = request.POST['nickname'] if request.POST['nickname'] else ""
 		email = request.POST['email'] if request.POST['email'] else ""
 		description = request.POST['description'] if request.POST['description'] else ""
-		print(nickname, description)
 		error_msg = "错误"
 		if not username:
 			error_msg = "请输入用户名"
@@ -69,7 +68,6 @@ def register(request, error_msg=""):
 			user.save()
 			thisProfile = UserExtraProfile(user = user, UNickName = nickname, UDescription = description)
 			thisProfile.save()
-			print('saved')
 			return HttpResponseRedirect("/")
 		if not input_is_valid :
 			return render(request, "register.html", {'error': error_msg, 'username': username, 'nickname': nickname, 'email': email, 'description': description})
