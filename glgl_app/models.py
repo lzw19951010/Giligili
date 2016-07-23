@@ -89,7 +89,7 @@ def profile(request, error_msg=''):
 						error_msg = "请输入昵称"
 					elif not description:
 						error_msg = "请输入个人描述"
-					elif:
+					else:
 						input_is_valid = True
 						profile = user.userextraprofile
 						profile.UNickName = nickname
