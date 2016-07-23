@@ -97,7 +97,7 @@ def profile(request, error_msg=''):
 						profile.save()
 						return render(request, "home.html", {'context': '信息更改成功'})
 					if not input_is_valid :
-						return render(request, "home.html", {'error': error_msg})
+						return render(request, "home.html", {'context': error_msg})
 				else:
 					error_msg = '该用户无法正常使用'
 					return render(request, "home.html", {'context': error_msg})
