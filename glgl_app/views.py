@@ -6,4 +6,5 @@ def index(request):
     return render(request, "index.html")
 def home(request):
 	return render(request, "home.html")
-# Create your views here.
+def setPasswordSuc(request):
+	return render(request,"setpassword-suc.html")

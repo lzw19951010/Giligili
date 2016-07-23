@@ -25,4 +25,6 @@ urlpatterns = [
 	url(r'^register/',glgl_app_models.register),
 	url(r'^home/',glgl_app_views.home),
     url(r'^profile/',glgl_app_models.profile),
+    url(r'^setpassword/',glgl_app_models.setPassword),
+    url(r'^setpassword-suc/',glgl_app_views.setPasswordSuc),
 ]

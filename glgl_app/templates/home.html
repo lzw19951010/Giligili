@@ -5,11 +5,11 @@
 		{% csrf_token %}
 		<div class="m-row">
 			<label for="id_username">用户名:</label>
-			<input type="text" class="form-control" placeholder="username" id="id_username" maxlength="20" name="username" value="{{ user.username }}">
+			<input type="text" class="form-control" readonly="true" id="id_username" maxlength="20" name="username" value="{{ user.username }}">
 		</div>
 		<div class="m-row">
 			<label for="id_email">邮箱:</label>
-			<span id="id_email">{{user.email}}</span>
+			<input type="text" class="form-control" readonly="true" id="id_email" maxlength="20" name="email" value="{{ user.email }}">
 		</div>
 		<div class="m-row">
 			<label for="id_password">密码:</label>
