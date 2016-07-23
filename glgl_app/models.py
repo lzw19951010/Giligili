@@ -75,7 +75,33 @@ def register(request, error_msg=""):
 			return render(request, "register.html", {'error': error_msg, 'username': username, 'nickname': nickname, 'email': email, 'description': description})
 	else:
 		return render(request, "register.html")
-		
+
+def profile(request, error_msg=''):
+	if request.user.is_authenticated():
+		if request.method == 'POST':
+			username = request.POST['username']
+			password1 = request.POST['password1'] if request.POST['password1'] else ""
+			nickname = request.POST['nickname'] if request.POST['nickname'] else ""
+			description = request.POST['description'] if request.POST['description'] else ""
+			user = auth.authenticate(username=username, password=password1)
+			if user is not None:
+				if user.is_active:
+					#user.userextraprofile.UNickName = nickname
+					#user.userextraprofile.UDescription = description
+					#更改个人信息
+					return render(request, "home.html", {'context': '信息更改成功'})
+				else:
+					error_msg = '该用户无法正常使用'
+					return render(request, "home.html", {'context': error_msg})
+			else:
+				error_msg = '密码错误'
+				return render(request, "home.html", {'context': error_msg})
+		else:
+			return render(request, "home.html")
+	else:
+		error_msg = '请先登录'
+		return render(request, "home.html", {'context': error_msg})
+
 def logout(request):
 	auth.logout(request)
 	return render(request, "logout.html")

@@ -4,8 +4,8 @@
 
 {% block content %}
 
- <form class="form-base" onsubmit="return check(this)" action="/register/" method="post" enctype="multipart/form-data">
- {% csrf_token %}
+<form class="form-base" onsubmit="return check(this)" action="/register/" method="post" enctype="multipart/form-data">
+{% csrf_token %}
 	<div class="m-row">
 		<label for="id_username">用户名:</label>
 		<input type="text" class="form-control" placeholder="Username" id="id_username" maxlength="50" name="username" value="{{ username }}">
@@ -33,7 +33,7 @@
 
 	<div class="m-row">
 		<label for="id_description">个人描述:</label>
-		<input type="text" class="form-control" placeholder="Description" id="id_description" maxlength="50" name="description" value="{{ description }}">
+		<input type="text" class="form-control" placeholder="Description" id="id_description" maxlength="100" name="description" value="{{ description }}">
 	</div>
 	
 	<input type="submit"  value="创建用户">

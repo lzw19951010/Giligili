@@ -16,11 +16,13 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from glgl_app import views as glgl_app_views
+from glgl_app import models as glgl_app_models
 urlpatterns = [
 	url(r'^admin/', admin.site.urls),
 	url(r'^$', glgl_app_views.index),
-	url(r'^login/','glgl_app.models.login'),
-	url(r'^logout/','glgl_app.models.logout'),
-	url(r'^register/','glgl_app.models.register'),
-	url(r'^home/',glgl_app_views.home)
+	url(r'^login/',glgl_app_models.login),
+	url(r'^logout/',glgl_app_models.logout),
+	url(r'^register/',glgl_app_models.register),
+	url(r'^home/',glgl_app_views.home),
+    url(r'^profile/',glgl_app_models.profile),
 ]
