@@ -4,8 +4,8 @@
 
 {% block content %}
 <div>username: {{user.username}}</div>
-<div>nickname: {{user.nickname}}</div>
+<div>nickname: {{user.userextraprofile.UNickName}}</div>
 <div>email: {{user.email}}</div>
-<div>description: {{user.discription}}</div>
+<div>description: {{user.userextraprofile.UDescription}}</div>
 <a href = "/">Return.</a>
 {% endblock %}
