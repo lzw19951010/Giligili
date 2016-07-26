@@ -3,7 +3,76 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.db import models
+from django import forms
+from django.views.decorators.http import require_http_methods
 import os 
+
+
+class Category(models.Model):
+	name = models.CharField(max_length=40)
+
+	def __str__(self):
+		return self.name
+
+	def get_absolute_url(self):
+		return '/category/%u' % self.pk
+
+class UserExtraProfile(models.Model):
+	user = models.OneToOneField(User)
+	UNickName = models.CharField(max_length=20,default='')
+	UDescription = models.CharField(max_length=50,default='')
+	
+class Video(models.Model):
+	title = models.CharField(max_length=100,default='title')
+	video = models.FileField(upload_to='media/videos')
+	cover = models.ImageField(upload_to='media/covers',default=os.path.join('default', 'default.jpg').replace('\\', '/'))
+	description = models.CharField(max_length=200,default='description')
+	tag = models.CharField(max_length=100,default='',blank=True)
+	uploader = models.ForeignKey(User)
+	category_set = models.ManyToManyField('Category', blank=True)
+	play = models.IntegerField(default=0)
+	money = models.IntegerField(default=0)
+	time = models.DateTimeField(auto_now=False, auto_now_add=True)
+	status = models.IntegerField(default=0)
+
+	def __str__(self):
+		return self.title
+
+	def get_absolute_url(self):
+		return '/video/%u' % self.pk
+	
+class Notification(models.Model):
+	NContent = models.CharField(max_length=50)
+	NUser = models.ForeignKey(UserExtraProfile)
+
+class VideoUploadForm(forms.ModelForm):
+	class Meta:
+		model = Video
+		fields = ['title', 'description', 'cover','video', 'tag', 'category_set']
+		widgets = {
+			'category_set': forms.CheckboxSelectMultiple
+		}
+
+
+@require_http_methods(["GET", "POST"])
+def upload(request):
+	if request.user.is_authenticated():
+
+		if request.method == 'GET':
+			return render(request, 'upload.html', {'form': VideoUploadForm(initial={'title': "", 'description': "", 'tag': ""})})
+		else:
+			form = VideoUploadForm(request.POST, request.FILES)
+			if form.is_valid():
+				video = form.save(commit=False)
+				video.status = 4
+				video.uploader = request.user
+				video.save()
+				form.save_m2m()
+				return HttpResponseRedirect("/")
+			else:
+				return render(request, 'upload.html', {'error': form.errors, 'form': form })
+	else:
+		return render(request, "login.html", {'error': "请登陆"})
 
 def login(request, error_msg=""):
 	error_msg = ''
@@ -146,17 +215,3 @@ def setPassword(request, error_msg=""):
 def logout(request):
 	auth.logout(request)
 	return render(request, "logout.html")
-	
-class UserExtraProfile(models.Model):
-	user = models.OneToOneField(User)
-	UNickName = models.CharField(max_length=20)
-	UDescription = models.CharField(max_length=50)
-	
-class Video(models.Model):
-	VTitle = models.CharField(max_length=50)
-	VUploader = models.ForeignKey(UserExtraProfile)
-	
-class Notification(models.Model):
-	NContent = models.CharField(max_length=50)
-	NUser = models.ForeignKey(UserExtraProfile)
-

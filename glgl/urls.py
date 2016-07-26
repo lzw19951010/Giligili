@@ -27,4 +27,6 @@ urlpatterns = [
     url(r'^profile/',glgl_app_models.profile),
     url(r'^setpassword/',glgl_app_models.setPassword),
     url(r'^setpassword-suc/',glgl_app_views.setPasswordSuc),
+    url(r'^upload/$', glgl_app_models.upload),
+
 ]
