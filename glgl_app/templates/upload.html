@@ -40,16 +40,21 @@
 
                 <div class="m-row">
                     <label for="id_categories">分类</label>
-                    {% for op in form.category_set %}
-                        <label class="checkbox-inline" for="{{ op.id_for_label }}">
-                            {{ op.tag }} {{ op.choice_label }}
-                        </label>
-                    {% endfor %}
+					<select class ="form-control" name = "category">
+					<option value="1">THU校内</option>
+					<option value="2">动画</option>
+					<option value="3">音乐</option>
+					<option value="4">舞蹈</option>
+					<option value="5">游戏</option>
+					<option value="6">科技</option>
+					<option value="7">生活</option>
+					<option value="8">娱乐</option>
+					</select>
                 </div>
 
                 <div class="m-row">
                     <label for="id_tag">关键词</label>
-                    <input type="text" class="form-control" placeholder="呵呵,呵呵" id="id_tag" name="tag"
+                    <input type="text" class="form-control" placeholder="" id="id_tag" name="tag"
                            value="{{ form.tag.value }}">
                 </div>
                 <div class="m-row" style="text-align: center">

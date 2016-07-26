@@ -21,6 +21,7 @@ from glgl_app import video as glgl_app_video
 import glgl.settings as settings
 urlpatterns = [
 	url(r'^admin/', admin.site.urls),
+	url(r'^category/(?P<category_id>[0-9]+)', glgl_app_views.category),
 	url(r'^$', glgl_app_views.index),
 	url(r'^login/',glgl_app_models.login),
 	url(r'^logout/',glgl_app_models.logout),

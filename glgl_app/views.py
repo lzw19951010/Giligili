@@ -5,6 +5,8 @@ from glgl_app.models import *
 @require_http_methods(["GET"])
 def index(request):
 	return render(request, "index.html", context={'popular_videos': Video.objects.filter(status=4).order_by("-play")[:12],})
+def category(request,category_id):
+	return render(request, "index.html", context={'category_videos': Video.objects.filter(tempCate = category_id)})
 def home(request):
 	return render(request, "home.html")
 def setPasswordSuc(request):

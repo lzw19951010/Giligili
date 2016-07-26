@@ -29,6 +29,7 @@ class Video(models.Model):
 	description = models.CharField(max_length=200,default='description')
 	tag = models.CharField(max_length=100,default='',blank=True)
 	uploader = models.ForeignKey(User)
+	tempCate = models.IntegerField(default = 0)
 	category_set = models.ManyToManyField('Category', blank=True)
 	play = models.IntegerField(default=0)
 	money = models.IntegerField(default=0)
@@ -65,6 +66,7 @@ def upload(request):
 			if form.is_valid():
 				video = form.save(commit=False)
 				video.status = 4
+				video.tempCate = request.POST['category']
 				video.uploader = request.user
 				video.save()
 				form.save_m2m()
