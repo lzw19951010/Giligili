@@ -37,7 +37,7 @@
 	{% for video in popular_videos %}
 	<div class="col-md-3 col-sm-6 col-xs-12 dd-grid">
 		<figure class="effect-sadie">
-			<img src="{% thumbnail video.image 480x270 crop detail %}" alt="img02" class="img-responsive center-block"/>
+			<img src="{{video.cover}}" alt="img02" class="img-responsive center-block"/>
 			<figcaption>
 			<h2>{{ video.title }}</h2>
 			<p>up主: {{ video.uploader.username }} <br>播放量: {{ video.play }}</p>

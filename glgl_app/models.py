@@ -24,8 +24,8 @@ class UserExtraProfile(models.Model):
 	
 class Video(models.Model):
 	title = models.CharField(max_length=100,default='title')
-	video = models.FileField(upload_to='media/videos')
-	cover = models.ImageField(upload_to='media/covers',default=os.path.join('default', 'default.jpg').replace('\\', '/'))
+	video = models.FileField(upload_to='videos')
+	cover = models.ImageField(upload_to='covers',default=os.path.join('media/default/default.jpg').replace('\\', '/'))
 	description = models.CharField(max_length=200,default='description')
 	tag = models.CharField(max_length=100,default='',blank=True)
 	uploader = models.ForeignKey(User)

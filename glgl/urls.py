@@ -17,6 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from glgl_app import views as glgl_app_views
 from glgl_app import models as glgl_app_models
+import glgl.settings as settings
 urlpatterns = [
 	url(r'^admin/', admin.site.urls),
 	url(r'^$', glgl_app_views.index),
@@ -28,5 +29,5 @@ urlpatterns = [
     url(r'^setpassword/',glgl_app_models.setPassword),
     url(r'^setpassword-suc/',glgl_app_views.setPasswordSuc),
     url(r'^upload/$', glgl_app_models.upload),
-
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 ]

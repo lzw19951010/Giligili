@@ -20,8 +20,8 @@ function check(thisform) {
 			video.focus();
 			return false
 		}
-		if (!validate_file(image, 3*1024*1024, "图像大小不能超过3M")) {
-			image.focus();
+		if (!validate_file(cover, 3*1024*1024, "图像大小不能超过3M")) {
+			cover.focus();
 			return false
 		}
 		if (!validate_required(title, "标题不能为空")) {
