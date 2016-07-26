@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 {% block extracss %}
-    <!--<link href="/static/css/video-js.min.css" rel="stylesheet">-->
     <link href="/static/css/video.css" rel="stylesheet">
-    <link href="http://vjs.zencdn.net/5.10.7/video-js.css" rel="stylesheet">
-    <link href="/static/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="/static/css/video-js.css" rel="stylesheet">
 {% endblock %}
 {% block title %}{{ video.title }}{% endblock %}
 {% block content %}
@@ -11,8 +9,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="info">
-                    <div class="video-title"><h2>{{ video.title }}</h2>
-                    </div>
+                    <div class="video-title"><h2>{{ video.title }}</h2></div>
                     <div class="tminfo"><a href="/">主页</a> >
                     {% for ca in video.category_set.all %}
                         <a href="/category/{{ ca.pk }}">{{ ca.name }}{% if not forloop.last %},{% endif %}</a>
@@ -24,7 +21,7 @@
                 </div>
             </div>
             <div class="player">
-                <video src="{{ video.video.url }}" id="video" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="640" height="400" data-setup="{}">
+                <video src="{{video.video.url}}" id="video" class="video-js vjs-default-skin vjs-big-play-centered" controls="controls" preload="auto" width="640" height="400" data-setup='{"playbackRates": [1, 1.5, 2] }'>
                     <p class="vjs-no-js">
                         To view this video please enable JavaScript, and consider upgrading to a
                         web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports
@@ -53,7 +50,6 @@
 </div>
 {% endblock %}
 {% block extrascripts %}
-<script src="/static/js/jquery-ui.min.js"></script>
-<script type="text/javascript" src="http://vjs.zencdn.net/5.10.7/video.js"></script>
-<!--<script src="/static/js/video.js"></script>-->
+<!--<script type="text/javascript" src="http://vjs.zencdn.net/5.10.7/video.js"></script>-->
+<script src="/static/js/video.js"></script>
 {% endblock %}

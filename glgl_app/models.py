@@ -41,7 +41,13 @@ class Video(models.Model):
 
 	def get_absolute_url(self):
 		return '/video/%u' % self.pk
-	
+# 评论
+class Comment(models.Model):
+	video = models.ForeignKey('Video')
+	user = models.ForeignKey(User)
+	content = models.CharField(max_length=400)
+	time = models.DateTimeField(auto_now=False, auto_now_add=True)
+
 class Notification(models.Model):
 	NContent = models.CharField(max_length=50)
 	NUser = models.ForeignKey(UserExtraProfile)
@@ -178,8 +184,7 @@ def profile(request, error_msg=''):
 		else:
 			return render(request, "home.html")
 	else:
-		error_msg = '请先登录'
-		return render(request, "home.html", {'context': error_msg})
+		return render(request, "notlogin.html")
 
 def setPassword(request, error_msg=""):
 	if request.user.is_authenticated() :
