@@ -32,23 +32,23 @@
 				</video>
 			</div>
 			{% if user.is_authenticated %}
-			<button type="button" class="btn btn-success btn-admin" id="btn-like">点赞</button>
+			<div class="col-sm-3 col-md-3 box-admin">
+				<button type="button" class="btn" id="btn-like">点赞</button>
+			</div>
 			{% endif %}
-			<div class="check">
-				<div class="col-sm-3 col-md-3 box-admin" width='640'>
+			<div class="col-sm-3 col-md-3 box-admin">
 				{% if user.is_staff %}
 					{% if video.status == 4 %}
 						<button type="button" class="btn btn-success btn-admin" onclick="passvideo(this)">审核通过</button>
 						<button type="button" class="btn btn-danger btn-admin" onclick="banvideo(this)">审核不通过</button>
-					{% elif video.status == 0 %}
+						{% elif video.status == 0 %}
 						<button type="button" class="btn btn-danger btn-admin" onclick="banvideo(this)">封禁视频</button>
-					{% elif video.status == 2 %}
+						{% elif video.status == 2 %}
 						<button type="button" class="btn btn-success btn-admin" onclick="passvideo(this)">解除视频封禁</button>
 					{% endif %}
 				{% endif %}
-				</div>
-				<div id='checkmsg'>
-				</div>
+			</div>
+			<div id='checkmsg'>
 			</div>
 		</div>
 		<div class="col-md-4">
@@ -60,7 +60,7 @@
 						</div>
 					</a>
 					<div class="r-info">
-						<div class="usname"><a href="/personal/{{ video.uploader.id }}"
+						<div class="usname"><a href="/homepage/{{ video.uploader.id }}"
 						class="name">{{ video.uploader.username }}</a></div>
 						<div class="sign">{{ video.uploader.userextraprofile.UDescription }}</div>
 					</div>
@@ -79,7 +79,7 @@
 								</div>
 							</a>
 							<div class="r-info">
-								<div class="usname"><a href="/personal/{{ video.uploader.id }}"
+								<div class="usname"><a href="/homepage/{{ video.uploader.id }}"
 								class="name">{{ comment.user }}</a></div>
 								<div class="sign">{{ comment.content }}</div>
 							</div>
@@ -112,19 +112,16 @@
 <script src="/static/js/video.js"></script>
 <script src="/static/js/ajax-send.js"></script>
 <script>
-
 function passvideo(){
 	$.post("passvideo/",function(data){
 		document.getElementById('checkmsg').innerHTML='视频已通过';
 	});
 }
-
 function banvideo(){
 	$.post("banvideo/",function(data){
 		document.getElementById('checkmsg').innerHTML='视频已封禁';
 		console.log('scssss');
 	});
 }
-
 </script>
 {% endblock %}

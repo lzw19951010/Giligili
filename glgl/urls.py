@@ -22,6 +22,7 @@ import glgl.settings as settings
 urlpatterns = [
 	url(r'^admin/', admin.site.urls),
     url(r'^check/', glgl_app_views.checkpage),
+    url(r'^banvideo/', glgl_app_views.banpage),
 	url(r'^category/(?P<category_id>[0-9]+)', glgl_app_views.category),
 	url(r'^$', glgl_app_views.index),
 	url(r'^login/',glgl_app_models.login),

@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% load thumbnail %}
-{% block title %}首页{% endblock %}
+{% block title %}{{pageTitle}}{% endblock %}
 {% block extracss %}
 	<link href="/static/css/index.css" rel="stylesheet">
 {% endblock %}
 {% block content %}
-	{% if popular_videos %}
+	{% if popular_videos or pageTitle == '首页' %}
 	<!-- Main jumbotron for a primary marketing message or call to action -->
 	<div id="myCarousel" class="carousel slide">
 		<!-- 轮播（Carousel）指标 -->

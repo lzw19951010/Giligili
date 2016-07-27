@@ -23,6 +23,7 @@ class Video(models.Model):
 	tag = models.CharField(max_length=100,default='',blank=True)
 	uploader = models.ForeignKey(User)
 	category = models.IntegerField(default = 0)
+	categoryName = models.CharField(max_length=20,default='')
 	play = models.IntegerField(default=0)
 	money = models.IntegerField(default=0)
 	time = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -62,9 +63,11 @@ def upload(request):
 		else:
 			form = VideoUploadForm(request.POST, request.FILES)
 			if form.is_valid():
+				categoryList = ['','THU校内','动画','音乐','舞蹈','游戏','科技','生活','娱乐']
 				video = form.save(commit=False)
 				video.status = 4
 				video.category = request.POST['category']
+				video.categoryName = categoryList[int(video.category)]
 				video.uploader = request.user
 				video.save()
 				form.save_m2m()

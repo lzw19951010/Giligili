@@ -4,9 +4,10 @@ from glgl_app.models import *
 # Create your views here.
 @require_http_methods(["GET"])
 def index(request):
-	return render(request, "index.html", context={'popular_videos': Video.objects.filter(status=0).order_by("-play")[:12],})
+	return render(request, "index.html", context={'popular_videos': Video.objects.filter(status=0).order_by("-play")[:12], 'pageTitle': '首页'})
 def category(request,category_id):
-	return render(request, "index.html", context={'category_videos': Video.objects.filter(status=0, category = category_id)})
+	categoryList = ['','THU校内','动画','音乐','舞蹈','游戏','科技','生活','娱乐']
+	return render(request, "index.html", context={'category_videos': Video.objects.filter(status=0, category = category_id), 'pageTitle': categoryList[int(category_id)]},)
 def home(request):
 	return render(request, "home.html")
 def setPasswordSuc(request):
@@ -26,3 +27,10 @@ def checkpage(request):
 		return render(request, 'notadmin.html')
 	else:
 		return render(request, 'check.html', context={'checking_videos': Video.objects.filter(status=4).order_by("time"),})
+
+@require_http_methods(["GET"])
+def banpage(request):
+	if not request.user.is_staff:
+		return render(request, 'notadmin.html')
+	else:
+		return render(request, 'banvideo.html', context={'checking_videos': Video.objects.filter(status=2).order_by("time"),})
