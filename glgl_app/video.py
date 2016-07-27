@@ -13,7 +13,8 @@ def video_play(request, video_id):
     if (not request.user.is_authenticated() or not request.user.is_staff) and video.status != 0:
         return render(request, "video-notfound.html")
     comments = video.comment_set.all()#.order_by("-date")[:3]
-    return render(request, 'video.html', {'video': video,'latest_comment':comments})
+    print(video.video.name[-3:])
+    return render(request, 'video.html', {'video': video, 'latest_comment':comments, 'video_type': video.video.name[-3:]} )
 
 @require_http_methods(["POST"])
 def video_pass(request, video_id):

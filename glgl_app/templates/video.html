@@ -17,14 +17,17 @@
 					&nbsp;&nbsp;&nbsp;
 					<i id="dianji" title="播放">{{ video.play }}</i>
 					&nbsp;&nbsp;&nbsp;
-					<span>上传时间：{{ video.time|date:"Y年m月d日" }}</span>
+					<span>上传时间：{{ video.time|date:"Y年m月d日" }}{{ video_type }}</span>
 				</div>
 			</div>
 			<div class="player">
-				<video src="{{video.video.url}}" id="video" class="video-js vjs-default-skin vjs-big-play-centered" controls="controls" preload="auto" width="640" height="400" data-setup='{"playbackRates": [1, 1.5, 2] }' poster='/media/{{video.cover}}'>
+				<video id="video" class="video-js vjs-default-skin vjs-big-play-centered" controls="controls" preload="auto" width="640" height="400" data-setup='{"playbackRates": [1, 1.5, 2]}' poster='/media/{{video.cover}}'>
+				{% if video_type == 'mp4' %}
+					<source src="{{ video.video.url }}" type='video/mp4'/>
+				{% else %}
+					<source src="{{ video.video.url }}" type='video/flv'/>
+				{% endif %}
 					<p class="vjs-no-js">
-						<source src="{{video.video.url}}" type='video/mp4'>
-						<source src="{{video.video.url}}" type='video/x_flv'>
 						To view this video please enable JavaScript, and consider upgrading to a
 						web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports
 						HTML5 video</a>
@@ -111,6 +114,7 @@
 <!--<script type="text/javascript" src="http://vjs.zencdn.net/5.10.7/video.js"></script>-->
 <script src="/static/js/video.js"></script>
 <script src="/static/js/ajax-send.js"></script>
+
 <script>
 function passvideo(){
 	$.post("passvideo/",function(data){
