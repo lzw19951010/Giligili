@@ -4,12 +4,14 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.db import models
 from django import forms
+import django.utils.timezone as timezone
 from django.views.decorators.http import require_http_methods
 import os 
 
 
 class UserExtraProfile(models.Model):
 	user = models.OneToOneField(User)
+	#follow_users = models.ManyToManyField(User)
 	nickName = models.CharField(max_length=20,default='')
 	description = models.CharField(max_length=50,default='')
 	def __str__(self):
@@ -40,7 +42,7 @@ class Comment(models.Model):
 	video = models.ForeignKey(Video)
 	like = models.IntegerField(default = 0)
 	content = models.CharField (max_length = 100)
-	#date = models.DateTimeField(auto_now=False, auto_now_add=True)
+	cdate = models.DateTimeField(default=timezone.now) 
 	
 
 class Notification(models.Model):

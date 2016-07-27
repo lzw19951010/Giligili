@@ -34,3 +34,12 @@ def banpage(request):
 		return render(request, 'notadmin.html')
 	else:
 		return render(request, 'banvideo.html', context={'checking_videos': Video.objects.filter(status=2).order_by("time"),})
+		
+def more_comments(request,video_id):
+	if not request.user.is_authenticated:
+		return render(request,'video.html')
+	else:
+		video = Video.objects.get(pk=video_id)
+		comments = video.comment_set.all().order_by("-cdate")
+		return render(request,'more_comments.html',context={'video':video,'all_comment':comments})
+		

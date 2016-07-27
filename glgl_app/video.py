@@ -12,8 +12,7 @@ def video_play(request, video_id):
         raise Http404("Video does not exist")
     if (not request.user.is_authenticated() or not request.user.is_staff) and video.status != 0:
         return render(request, "video-notfound.html")
-    comments = video.comment_set.all()#.order_by("-date")[:3]
-    print(video.video.name[-3:])
+    comments = video.comment_set.all().order_by("-cdate")[:4]
     return render(request, 'video.html', {'video': video, 'latest_comment':comments, 'video_type': video.video.name[-3:]} )
 
 @require_http_methods(["POST"])
@@ -39,3 +38,24 @@ def video_ban(request, video_id):
 	video.status = 2
 	video.save()
 	return HttpResponse()
+	
+	
+	
+@require_http_methods(['POST'])
+def video_comment_add(request):
+    if request.user.is_authenticated():
+        try:
+            video = Video.objects.get( pk = request.POST['video'])
+            user = request.user
+            content = request.POST['content']
+            c = Comment(video=video,
+                        user=user,
+                        content=content)
+            c.save()
+        except Video.DoesNotExist:
+            return JsonResponse(data={'res': False,
+                                      'error': '发送失败！'})
+        return JsonResponse(data={'res': True})
+    else:
+        return JsonResponse(data={'res': False,
+                                  'error': '用户没有权限！'})

@@ -10,6 +10,7 @@
 			<div class="col-md-8">
 				<div class="info">
 					<div class="video-title"><h2>{{ video.title }}</h2></div>
+					 <div style="clear:both;"></div>
 					<div class="tminfo"><a href="/">主页</a> >
 					{% for ca in video.category_set.all %}
 						<a href="/category/{{ ca.pk }}">{{ ca.name }}{% if not forloop.last %},{% endif %}</a>
@@ -19,9 +20,12 @@
 					&nbsp;&nbsp;&nbsp;
 					<span>上传时间：{{ video.time|date:"Y年m月d日" }}{{ video_type }}</span>
 				</div>
+				 <div style="clear:both;"></div>
 			</div>
 			<div class="player">
-				<video id="video" class="video-js vjs-default-skin vjs-big-play-centered" controls="controls" preload="auto" width="640" height="400" data-setup='{"playbackRates": [1, 1.5, 2]}' poster='/media/{{video.cover}}'>
+				<div id="video-id" style="display: none;">{{ video.pk }}</div>
+				<video id="video" class="video-js vjs-default-skin vjs-big-play-centered" controls="controls" preload="auto"
+					width="640" height="400" data-setup='{"playbackRates": [1, 1.5, 2]}' poster='/media/{{video.cover}}'>
 				{% if video_type == 'mp4' %}
 					<source src="{{ video.video.url }}" type='video/mp4'/>
 				{% else %}
@@ -64,13 +68,13 @@
 					</a>
 					<div class="r-info">
 						<div class="usname"><a href="/homepage/{{ video.uploader.id }}"
-						class="name">{{ video.uploader.username }}</a></div>
+						class="name">{{ video.uploader.nickName }}</a></div>
 						<div class="sign">{{ video.uploader.userextraprofile.UDescription }}</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4" >评论区title-无样式</div>
+		<div class="col-md-4" >评论区title-无样式<a href = 'morecomments/'>view more</a></div>
 		{% if latest_comment %}
 			{% for comment in latest_comment %}
 				<div class="col-md-4">
@@ -83,8 +87,9 @@
 							</a>
 							<div class="r-info">
 								<div class="usname"><a href="/homepage/{{ video.uploader.id }}"
-								class="name">{{ comment.user }}</a></div>
+								class="name">{{ comment.user.nickName }}</a></div>
 								<div class="sign">{{ comment.content }}</div>
+								<div class="sign">{{ comment.cdate }}</div>
 							</div>
 						</div>
 					</div>
@@ -93,20 +98,20 @@
 		{% else %}
 			<div class="col-md-4">还没有评论哦</div>
 		{% endif %}
-		<div class="col-md-4">
+		{% if user.is_authenticated %}
+		<div class="col-md-12">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<form class="form-base"  action="./comment" method="post" enctype="multipart/form-data">
-						{% csrf_token %}
-						<div class="m-row">
-							<label for="id_content">内容:</label>
-							<input type="text" class="form-control"id="id_content" maxlength="100" name="content">
-						</div>
-						<input type="submit" class = "btn btn-primary" value="评论"/>
-					</form>
+					<textarea id="input-comment" class="form-control" maxlength="400"
+                                      placeholder="留下你的脚印吧~不要超过400字哦"
+                                      aria-describedby="basic-addon1"></textarea>
+                            <div class="right">
+                                <button id="send-comment" class="btn btn-info bullet-send-btn">发送</button>
+                            </div>		
 				</div>
 			</div>
 		</div>
+		{% endif %}
 	</div>
 </div>
 {% endblock %}
@@ -124,8 +129,25 @@ function passvideo(){
 function banvideo(){
 	$.post("banvideo/",function(data){
 		document.getElementById('checkmsg').innerHTML='视频已封禁';
-		console.log('scssss');
 	});
 }
+</script>
+
+<script>
+(function(){
+	
+	var send_btn = $('#send-comment');
+	var comment_input = $('#input-comment');
+	var video_id = $('#video-id');
+
+	send_btn.click(function(){
+		$.post('/send-comment/',{
+			'video' : video_id.html(),
+			'content' : comment_input.val()
+		},function(){});
+		comment_input.val('')
+		layer.msg('评论成功');
+	}) 
+})();
 </script>
 {% endblock %}

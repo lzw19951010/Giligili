@@ -41,6 +41,8 @@ urlpatterns = [
         url(r'^passvideo/$', glgl_app_video.video_pass),
         url(r'^banvideo/$', glgl_app_video.video_ban)
     ])),
+	url(r'(?P<video_id>[0-9]+)/morecomments/$',glgl_app_views.more_comments),
+	url(r'^send-comment/$',glgl_app_video.video_comment_add),
 	url(r'(?P<video_id>[0-9]+)/comment$',glgl_app_models.commitComment),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 ]

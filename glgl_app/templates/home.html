@@ -25,6 +25,10 @@
 				<label for="id_description">个人描述:</label>
 				<input type="text" class="form-control" placeholder="Description" id="id_description" maxlength="100" name="description" value="{{ user.userextraprofile.description }}">
 			</div>
+			<div class="m-row">
+                <label for="id_video">头像</label>
+                <input type="file" accept="headimage/*" class="form-control" id="id_headimage" name="headimage">
+            </div>
 			<div class="m-row" style="text-align: center">
 				<input type="submit" class="btn btn-success btn-lg" style="margin-top: 10px" value="确认修改">
 				<div class="m-row" style="text-align: center">
