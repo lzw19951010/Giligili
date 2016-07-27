@@ -8,19 +8,12 @@ from django.views.decorators.http import require_http_methods
 import os 
 
 
-class Category(models.Model):
-	name = models.CharField(max_length=40)
-
-	def __str__(self):
-		return self.name
-
-	def get_absolute_url(self):
-		return '/category/%u' % self.pk
-
 class UserExtraProfile(models.Model):
 	user = models.OneToOneField(User)
-	UNickName = models.CharField(max_length=20,default='')
-	UDescription = models.CharField(max_length=50,default='')
+	nickName = models.CharField(max_length=20,default='')
+	description = models.CharField(max_length=50,default='')
+	def __str__(self):
+		return self.user.username
 	
 class Video(models.Model):
 	title = models.CharField(max_length=100,default='title')
@@ -29,8 +22,7 @@ class Video(models.Model):
 	description = models.CharField(max_length=200,default='description')
 	tag = models.CharField(max_length=100,default='',blank=True)
 	uploader = models.ForeignKey(User)
-	tempCate = models.IntegerField(default = 0)
-	category_set = models.ManyToManyField('Category', blank=True)
+	category = models.IntegerField(default = 0)
 	play = models.IntegerField(default=0)
 	money = models.IntegerField(default=0)
 	time = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -55,10 +47,8 @@ class Notification(models.Model):
 class VideoUploadForm(forms.ModelForm):
 	class Meta:
 		model = Video
-		fields = ['title', 'description', 'cover','video', 'tag', 'category_set']
-		widgets = {
-			'category_set': forms.CheckboxSelectMultiple
-		}
+		fields = ['title', 'description', 'cover','video', 'tag', 'category']
+
 
 
 @require_http_methods(["GET", "POST"])
@@ -72,7 +62,7 @@ def upload(request):
 			if form.is_valid():
 				video = form.save(commit=False)
 				video.status = 4
-				video.tempCate = request.POST['category']
+				video.category = request.POST['category']
 				video.uploader = request.user
 				video.save()
 				form.save_m2m()
@@ -143,7 +133,7 @@ def register(request, error_msg=""):
 			input_is_valid = True
 			user = User.objects.create_user(username = username, password = password1, email = email)
 			user.save()
-			thisProfile = UserExtraProfile(user = user, UNickName = nickname, UDescription = description)
+			thisProfile = UserExtraProfile(user = user, nickName = nickname, description = description)
 			thisProfile.save()
 			return HttpResponseRedirect("/")
 		if not input_is_valid :
@@ -169,8 +159,8 @@ def profile(request, error_msg=''):
 					else:
 						input_is_valid = True
 						profile = user.userextraprofile
-						profile.UNickName = nickname
-						profile.UDescription = description
+						profile.nickName = nickname
+						profile.description = description
 						profile.save()
 						return render(request, "home.html", {'context': '信息更改成功'})
 					if not input_is_valid :
