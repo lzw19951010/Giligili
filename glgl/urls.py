@@ -37,5 +37,6 @@ urlpatterns = [
     url(r'^video/(?P<video_id>[0-9]+)/', include([
         url(r'^$', glgl_app_video.video_play)
     ])),
+	url(r'(?P<video_id>[0-9]+)/comment$',glgl_app_models.commitComment),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 ]

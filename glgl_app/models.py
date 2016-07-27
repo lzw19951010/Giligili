@@ -35,10 +35,12 @@ class Video(models.Model):
 		return '/video/%u' % self.pk
 # 评论
 class Comment(models.Model):
-	video = models.ForeignKey('Video')
 	user = models.ForeignKey(User)
-	content = models.CharField(max_length=400)
-	time = models.DateTimeField(auto_now=False, auto_now_add=True)
+	video = models.ForeignKey(Video)
+	like = models.IntegerField(default = 0)
+	content = models.CharField (max_length = 100)
+	#date = models.DateTimeField(auto_now=False, auto_now_add=True)
+	
 
 class Notification(models.Model):
 	NContent = models.CharField(max_length=50)
@@ -212,3 +214,13 @@ def setPassword(request, error_msg=""):
 def logout(request):
 	auth.logout(request)
 	return render(request, "logout.html")
+def commitComment(request,video_id):
+	if request.user.is_authenticated():
+		if request.method == "POST":
+			comment = Comment(user = request.user,
+					content = request.POST['content'] if request.POST['content'] else "",
+					video = Video.objects.get(pk=video_id))
+			comment.save()
+			return HttpResponseRedirect("./")
+	else:
+		return HttpResponseRedirect("/")
