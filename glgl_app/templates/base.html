@@ -52,7 +52,19 @@
                         </ul>
                     </li>
                     {% if user.is_staff %}
-                    <li class="menu"><a href="/admin">管理</a></li>
+                    <li class="menu dropdown">
+                        <a href="#" class="dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown">管理
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <li><a href="/check">审核视频</a></li>
+                            <li><a href="/">举报信息处理</a></li>
+                            {% if user.is_superuser %}
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/admin">网站管理</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
                     {% endif %}
                 {% else %}
                     <li class="menu"><a href="/login">登陆</a></li>

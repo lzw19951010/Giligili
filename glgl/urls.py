@@ -21,6 +21,7 @@ from glgl_app import video as glgl_app_video
 import glgl.settings as settings
 urlpatterns = [
 	url(r'^admin/', admin.site.urls),
+    url(r'^check/', glgl_app_views.checkpage),
 	url(r'^category/(?P<category_id>[0-9]+)', glgl_app_views.category),
 	url(r'^$', glgl_app_views.index),
 	url(r'^login/',glgl_app_models.login),
@@ -35,7 +36,9 @@ urlpatterns = [
     url(r'^setpassword-suc/',glgl_app_views.setPasswordSuc),
     url(r'^upload/$', glgl_app_models.upload),
     url(r'^video/(?P<video_id>[0-9]+)/', include([
-        url(r'^$', glgl_app_video.video_play)
+        url(r'^$', glgl_app_video.video_play),
+        url(r'^passvideo/$', glgl_app_video.video_pass),
+        url(r'^banvideo/$', glgl_app_video.video_ban)
     ])),
 	url(r'(?P<video_id>[0-9]+)/comment$',glgl_app_models.commitComment),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
