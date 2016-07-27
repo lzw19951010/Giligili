@@ -1,89 +1,91 @@
 {% extends "base.html" %}
 {% block extracss %}
-    <link href="/static/css/video.css" rel="stylesheet">
-    <link href="/static/css/video-js.css" rel="stylesheet">
+	<link href="/static/css/video.css" rel="stylesheet">
+	<link href="/static/css/video-js.css" rel="stylesheet">
 {% endblock %}
 {% block title %}{{ video.title }}{% endblock %}
 {% block content %}
-    <div class="dd-video">
-        <div class="row">
-            <div class="col-md-8">
-                <div class="info">
-                    <div class="video-title"><h2>{{ video.title }}</h2></div>
-                    <div class="tminfo"><a href="/">主页</a> >
-                    {% for ca in video.category_set.all %}
-                        <a href="/category/{{ ca.pk }}">{{ ca.name }}{% if not forloop.last %},{% endif %}</a>
-                    {% endfor %}
-                    &nbsp;&nbsp;&nbsp;
-                    <i id="dianji" title="播放">{{ video.play }}</i>
-                    &nbsp;&nbsp;&nbsp;
-                    <span>上传时间：{{ video.time|date:"Y年m月d日" }}</span>
-                </div>
-            </div>
-            <div class="player">
-                <video src="{{video.video.url}}" id="video" class="video-js vjs-default-skin vjs-big-play-centered" controls="controls" preload="auto" width="640" height="400" data-setup='{"playbackRates": [1, 1.5, 2] }'>
-                    <p class="vjs-no-js">
-                        To view this video please enable JavaScript, and consider upgrading to a
-                        web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports
-                        HTML5 video</a>
-                    </p>
-                </video>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <a href="#">
-                        <div class="u-face"><img
-                            src={{video.uploader.image}}>
-                        </div>
-                    </a>
-                    <div class="r-info">
-                        <div class="usname"><a href="/personal/{{ video.uploader.id }}"
-                        class="name">{{ video.uploader.username }}</a></div>
-                        <div class="sign">{{ video.uploader.userextraprofile.UDescription }}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-		<div class="col-md-4" >评论区title-无样式</div>
-		{% if latest_comment %}
-			{% for comment in latest_comment %}
-			<div class="col-md-4">
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<a href="#">
-							<div class="u-face"><img
-								src={{video.uploader.image}}>
-							</div>
-						</a>
-						<div class="r-info">
-							<div class="usname"><a href="/personal/{{ video.uploader.id }}"
-							class="name">{{ comment.user }}</a></div>
-							<div class="sign">{{ comment.content }}</div>
+	<div class="dd-video">
+		<div class="row">
+			<div class="col-md-8">
+				<div class="info">
+					<div class="video-title"><h2>{{ video.title }}</h2></div>
+					<div class="tminfo"><a href="/">主页</a> >
+					{% for ca in video.category_set.all %}
+						<a href="/category/{{ ca.pk }}">{{ ca.name }}{% if not forloop.last %},{% endif %}</a>
+					{% endfor %}
+					&nbsp;&nbsp;&nbsp;
+					<i id="dianji" title="播放">{{ video.play }}</i>
+					&nbsp;&nbsp;&nbsp;
+					<span>上传时间：{{ video.time|date:"Y年m月d日" }}</span>
+				</div>
+			</div>
+			<div class="player">
+				<video src="{{video.video.url}}" id="video" class="video-js vjs-default-skin vjs-big-play-centered" controls="controls" preload="auto" width="640" height="400" data-setup='{"playbackRates": [1, 1.5, 2] }' poster='/media/{{video.cover}}'>
+					<p class="vjs-no-js">
+						<source src="{{video.video.url}}" type='video/mp4'>
+						<source src="{{video.video.url}}" type='video/x_flv'>
+						To view this video please enable JavaScript, and consider upgrading to a
+						web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports
+						HTML5 video</a>
+					</p>
+				</video>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<a href="#">
+						<div class="u-face"><img
+							src={{video.uploader.image}}>
 						</div>
+					</a>
+					<div class="r-info">
+						<div class="usname"><a href="/personal/{{ video.uploader.id }}"
+						class="name">{{ video.uploader.username }}</a></div>
+						<div class="sign">{{ video.uploader.userextraprofile.UDescription }}</div>
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="col-md-4" >评论区title-无样式</div>
+		{% if latest_comment %}
+			{% for comment in latest_comment %}
+				<div class="col-md-4">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<a href="#">
+								<div class="u-face"><img
+									src={{video.uploader.image}}>
+								</div>
+							</a>
+							<div class="r-info">
+								<div class="usname"><a href="/personal/{{ video.uploader.id }}"
+								class="name">{{ comment.user }}</a></div>
+								<div class="sign">{{ comment.content }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			{% endfor %}
 		{% else %}
-		<div class="col-md-4">还没有评论哦</div>
+			<div class="col-md-4">还没有评论哦</div>
 		{% endif %}
 		<div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <form class="form-base"  action="./comment" method="post" enctype="multipart/form-data">
-					{% csrf_token %}
-					<div class="m-row">
-						<label for="id_content">内容:</label>
-						<input type="text" class="form-control"id="id_content" maxlength="100" name="content">
-					</div>
-					<input type="submit" class = "btn btn-primary" value="评论"/>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<form class="form-base"  action="./comment" method="post" enctype="multipart/form-data">
+						{% csrf_token %}
+						<div class="m-row">
+							<label for="id_content">内容:</label>
+							<input type="text" class="form-control"id="id_content" maxlength="100" name="content">
+						</div>
+						<input type="submit" class = "btn btn-primary" value="评论"/>
 					</form>
-                </div>
-            </div>
-        </div>
-    </div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 {% endblock %}
 {% block extrascripts %}
