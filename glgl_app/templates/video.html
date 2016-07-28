@@ -38,6 +38,10 @@
 					</p>
 				</video>
 			</div>
+			<div class="col-sm-3 col-md-3 box-admin">
+				<div class="glyphicon glyphicon-play" aria-hidden="true"></div>
+				<div>播放量：<span id = "playnum">{{video.play}}</span></div>
+			</div>
 			{% if user.is_authenticated %}
 				<div class="col-sm-3 col-md-3 box-admin">
 					<div class="glyphicon glyphicon-heart" aria-hidden="true" style = "cursor: pointer" onclick="likethis(this)"></div>
@@ -69,7 +73,7 @@
 					</a>
 					<div class="r-info">
 						<div class="usname"><a href="/homepage/{{ video.uploader.id }}"
-						class="name">{{ video.uploader.username }} {{ video.uploader.userextraprofile.description}}</a></div>
+						class="name">{{ video.uploader.username }}</a></div>
 						<div class="sign">{{ video.uploader.userextraprofile.description }}</div>
 					</div>
 				</div>

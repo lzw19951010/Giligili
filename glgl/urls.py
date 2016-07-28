@@ -47,7 +47,8 @@ urlpatterns = [
 	url(r'^send-comment/$',glgl_app_video.video_comment_add),
 	url(r'(?P<video_id>[0-9]+)/comment$',glgl_app_models.commitComment),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-    url(r'^search/$', glgl_app_search.search_html),
-    url(r'^search/request/$', glgl_app_search.search),
-    url(r'^search/resulthtml/$', glgl_app_search.search_html),
+    url(r'^search/',include([
+        url(r'^$',glgl_app_search.search_mainpage),
+        url(r'^(?P<category_id>[0-9]+)/', glgl_app_search.search_html)
+    ]))
 ]

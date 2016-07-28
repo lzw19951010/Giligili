@@ -8,15 +8,6 @@ import django.utils.timezone as timezone
 from django.views.decorators.http import require_http_methods
 import os 
 
-
-class UserExtraProfile(models.Model):
-	user = models.OneToOneField(User)
-	#follow_users = models.ManyToManyField(User)
-	nickName = models.CharField(max_length=20,default='')
-	description = models.CharField(max_length=50,default='')
-	def __str__(self):
-		return self.user.username
-	
 class Video(models.Model):
 	title = models.CharField(max_length=100,default='title')
 	video = models.FileField(upload_to='videos')
@@ -36,6 +27,17 @@ class Video(models.Model):
 
 	def get_absolute_url(self):
 		return '/video/%u' % self.pk
+
+class UserExtraProfile(models.Model):
+	user = models.OneToOneField(User)
+	#follow_users = models.ManyToManyField(User)
+	nickName = models.CharField(max_length=20,default='')
+	description = models.CharField(max_length=50,default='')
+	videoUploaded = models.ManyToManyField("Video", related_name="videoUploaded")
+	def __str__(self):
+		return self.user.username
+	
+
 # 评论
 class Comment(models.Model):
 	user = models.ForeignKey(User)
@@ -75,6 +77,7 @@ def upload(request):
 				video.uploader = request.user
 				video.save()
 				form.save_m2m()
+				video.uploader.userextraprofile.videoUploaded.add(video)
 				return HttpResponseRedirect("/")
 			else:
 				return render(request, 'upload.html', {'error': form.errors, 'form': form })

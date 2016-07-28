@@ -19,7 +19,7 @@ def homepage(request, user_id):
 		user = User.objects.get(pk=user_id)
 	except User.DoesNotExist:
 		raise Http404("User does not exist")
-	return render(request, 'homepage.html',{'pageuser': user})
+	return render(request, 'homepage.html',{'pageuser': user, 'video_set': user.video_set.all().filter(status=0).order_by("-time"),})
 
 @require_http_methods(["GET"])
 def checkpage(request):

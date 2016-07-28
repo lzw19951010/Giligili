@@ -26,7 +26,6 @@
                     </div>
                 </div>
             {% endif %}
-
         </div>
     </div>
     <div id="middle_content">
@@ -39,9 +38,9 @@
                             {% if video_set %}
                                 {% for video in video_set %}
                                     <div class="col-md-3 col-sm-6 col-xs-12 show-video">
-                                        <a href="/video/{{ video.id }}" title="{{ video.title }}"> <img src="{{video.cover}}" class="img-responsive center-block"/> </a>
-                                        <p>{{ video.title }}</p>
-                                        <i id="dianji" title="播放">{{ video.play }}</i>
+                                        <a href="/video/{{ video.id }}" title="{{ video.title }}"> <img src="/media/{{video.cover}}" class="img-responsive center-block"/> </a>
+                                        <h3>{{ video.title }}</h3>
+                                        <div class="glyphicon glyphicon-play" aria-hidden="true">：<span id = "playnum">{{video.play}}</span></div>
                                     </div>
                                 {% endfor %}
                             {% else %}
@@ -58,7 +57,6 @@
                         <p>自我描述：{{ pageuser.userextraprofile.description }}</p>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

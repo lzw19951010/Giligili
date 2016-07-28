@@ -69,3 +69,13 @@ def like(request, video_id):
     video.like += 1
     video.save()
     return JsonResponse(data={'like': video.like})
+
+@require_http_methods(['POST'])
+def play_add(request):
+    try:
+        video = Video.objects.get(pk=request.POST['id'])
+        video.play += 1
+        video.save()
+    except Video.DoesNotExist:
+        return JsonResponse(data={'res': False})
+    return JsonResponse(data={'res': True})
