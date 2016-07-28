@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^homepage/(?P<user_id>[0-9]+)/', include([
         url(r'^$', glgl_app_views.homepage)
     ])),
+    url(r'^about/',glgl_app_views.aboutus),
     url(r'^setpassword/',glgl_app_models.setPassword),
     url(r'^setpassword-suc/',glgl_app_views.setPasswordSuc),
     url(r'^upload/$', glgl_app_models.upload),
@@ -45,7 +46,6 @@ urlpatterns = [
     ])),
 	url(r'(?P<video_id>[0-9]+)/morecomments/$',glgl_app_views.more_comments),
 	url(r'^send-comment/$',glgl_app_video.video_comment_add),
-	url(r'(?P<video_id>[0-9]+)/comment$',glgl_app_models.commitComment),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     url(r'^search/',include([
         url(r'^$',glgl_app_search.search_mainpage),

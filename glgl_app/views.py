@@ -43,3 +43,6 @@ def more_comments(request,video_id):
 		comments = video.comment_set.all().order_by("-cdate")
 		return render(request,'more_comments.html',context={'video':video,'all_comment':comments})
 		
+def aboutus(request):
+	return render(request,'about.html')
+		

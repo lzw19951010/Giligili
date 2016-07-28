@@ -12,6 +12,8 @@ def video_play(request, video_id):
         raise Http404("Video does not exist")
     if (not request.user.is_authenticated() or not request.user.is_staff) and video.status != 0:
         return render(request, "video-notfound.html")
+    video.play = video.play + 1
+    video.save()
     comments = video.comment_set.all().order_by("-cdate")[:4]
     return render(request, 'video.html', {'video': video, 'latest_comment':comments, 'video_type': video.video.name[-3:]} )
 
@@ -66,7 +68,9 @@ def like(request, video_id):
         video = Video.objects.get(pk=video_id)
     except Video.DoesNotExist:
         return Http404("Video not found")
-    video.like += 1
+    if not request.user.userextraprofile in video.like_list.all():
+        video.like += 1
+        video.like_list.add(request.user.userextraprofile)
     video.save()
     return JsonResponse(data={'like': video.like})
 

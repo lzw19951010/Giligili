@@ -8,7 +8,17 @@ import django.utils.timezone as timezone
 from django.views.decorators.http import require_http_methods
 import os 
 
+class UserExtraProfile(models.Model):
+	user = models.OneToOneField(User)
+	headimage = models.ImageField(upload_to='headimages',default= 'default/defaulthead.jpg')
+	nickName = models.CharField(max_length=20,default='')
+	description = models.CharField(max_length=50,default='')
+	videoUploaded = models.ManyToManyField("Video", related_name="videoUploaded")
+	def __str__(self):
+		return self.user.username
+		
 class Video(models.Model):
+	like_list = models.ManyToManyField(UserExtraProfile)
 	title = models.CharField(max_length=100,default='title')
 	video = models.FileField(upload_to='videos')
 	cover = models.ImageField(upload_to='covers',default= 'default/default.jpg')
@@ -28,14 +38,7 @@ class Video(models.Model):
 	def get_absolute_url(self):
 		return '/video/%u' % self.pk
 
-class UserExtraProfile(models.Model):
-	user = models.OneToOneField(User)
-	#follow_users = models.ManyToManyField(User)
-	nickName = models.CharField(max_length=20,default='')
-	description = models.CharField(max_length=50,default='')
-	videoUploaded = models.ManyToManyField("Video", related_name="videoUploaded")
-	def __str__(self):
-		return self.user.username
+
 	
 
 # 评论
@@ -63,7 +66,6 @@ class VideoUploadForm(forms.ModelForm):
 @require_http_methods(["GET", "POST"])
 def upload(request):
 	if request.user.is_authenticated():
-
 		if request.method == 'GET':
 			return render(request, 'upload.html', {'form': VideoUploadForm(initial={'title': "", 'description': "", 'tag': ""})})
 		else:
@@ -71,13 +73,17 @@ def upload(request):
 			if form.is_valid():
 				categoryList = ['','THU校内','动画','音乐','舞蹈','游戏','科技','生活','娱乐']
 				video = form.save(commit=False)
-				video.status = 4
+				if request.user.is_staff:
+					video.status = 0
+				else:
+					video.status = 4
 				video.category = request.POST['category']
 				video.categoryName = categoryList[int(video.category)]
 				video.uploader = request.user
 				video.save()
 				form.save_m2m()
-				video.uploader.userextraprofile.videoUploaded.add(video)
+				if not request.user.is_superuser:
+					video.uploader.userextraprofile.videoUploaded.add(video)
 				return HttpResponseRedirect("/")
 			else:
 				return render(request, 'upload.html', {'error': form.errors, 'form': form })
@@ -158,6 +164,7 @@ def profile(request, error_msg=''):
 		if request.method == 'POST':
 			username = request.POST['username']
 			password1 = request.POST['password1'] if request.POST['password1'] else ""
+			headimage = request.FILES['headimage']
 			nickname = request.POST['nickname'] if request.POST['nickname'] else ""
 			description = request.POST['description'] if request.POST['description'] else ""
 			user = auth.authenticate(username=username, password=password1)
@@ -170,8 +177,8 @@ def profile(request, error_msg=''):
 						error_msg = "请输入个人描述"
 					else:
 						input_is_valid = True
-						print(dir(user))
 						profile = user.userextraprofile
+						profile.headimage = headimage
 						profile.nickName = nickname
 						profile.description = description
 						profile.save()
@@ -225,13 +232,3 @@ def setPassword(request, error_msg=""):
 def logout(request):
 	auth.logout(request)
 	return render(request, "logout.html")
-def commitComment(request,video_id):
-	if request.user.is_authenticated():
-		if request.method == "POST":
-			comment = Comment(user = request.user,
-					content = request.POST['content'] if request.POST['content'] else "",
-					video = Video.objects.get(pk=video_id))
-			comment.save()
-			return HttpResponseRedirect("./")
-	else:
-		return HttpResponseRedirect("/")

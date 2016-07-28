@@ -26,8 +26,7 @@
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<a href="#">
-						<div class="u-face"><img
-							src={{video.uploader.image}}>
+						<div class="u-face"><img class="small-headimage" src='/media/{{video.uploader.userextraprofile.headimage}}'>
 						</div>
 					</a>
 					<div class="r-info">
@@ -45,8 +44,7 @@
 					<div class="panel panel-default">
 						<div class="panel-body">
 							<a href="#">
-								<div class="u-face"><img
-									src={{video.uploader.image}}>
+								<div class="u-face"><img class="small-headimage" src='/media/{{comment.user.userextraprofile.headimage}}'>
 								</div>
 							</a>
 							<div class="r-info">
@@ -62,6 +60,7 @@
 		{% else %}
 			<div class="col-md-12">还没有评论哦</div>
 		{% endif %}
+		<!--
 		{% if user.is_authenticated %}
 		<div class="col-md-12">
 			<div class="panel panel-default">
@@ -75,10 +74,11 @@
 				</div>
 			</div>
 		</div>
+		{% endif %}-->
 		<div class="m-row" style="text-align: center">
 			<a href = "{{ video.get_absolute_url }}" class = "btn btn-default btn-lg" style="margin-top: 10px">返回</a>
 		</div>
-		{% endif %}
+		
 	</div>
 {% endblock %}
 {% block extrascripts %}

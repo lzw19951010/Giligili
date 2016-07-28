@@ -66,42 +66,45 @@
 		<div class="col-md-4">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<a href="#">
-						<div class="u-face"><img
-							src={{video.uploader.image}}>
-						</div>
-					</a>
-					<div class="r-info">
-						<div class="usname"><a href="/homepage/{{ video.uploader.id }}"
-						class="name">{{ video.uploader.username }}</a></div>
-						<div class="sign">{{ video.uploader.userextraprofile.description }}</div>
+						<a href="#">
+							<div class="u-face"><img class="small-headimage" src='/media/{{video.uploader.userextraprofile.headimage}}'></div>
+						</a>
+						<div class="r-info">
+							<div class="usname"><a href="/homepage/{{ video.uploader.id }}"
+							class="name">{{ video.uploader.username }}</a></div>
+							<div class="sign">{{ video.uploader.userextraprofile.description }}</div>
+						
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-5" >评论区<a href = 'morecomments/'>view more</a>
-		{% if latest_comment %}
-			{% for comment in latest_comment %}
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<a href="#">
-							<div class="u-face"><img src={{video.uploader.image}}> </div>
-						</a>
-						<div class="r-info">
-							<div class="usname"><a href="/homepage/{{ comment.user.id }}"
-							class="name">{{ comment.user.userextraprofile.nickName }}</a></div>
-							<div class="sign">{{ comment.content }}</div>
-							<div class="sign">{{ comment.cdate }}</div>
+		<div class="col-md-8" >
+			<div class = 'panel panel-default'>
+			评论区
+			<a href = 'morecomments/' >view more</a>
+			</div>
+			{% if latest_comment %}
+				{% for comment in latest_comment %}
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<a href="#">
+								<div class="u-face"><img class="small-headimage" src='/media/{{comment.user.userextraprofile.headimage}}'> </div>
+							</a>
+							<div class="r-info">
+								<div class="usname"><a href="/homepage/{{ comment.user.id }}"
+								class="name">{{ comment.user.userextraprofile.nickName }}</a></div>
+								<div class="sign">{{ comment.content }}</div>
+								<div class="sign">{{ comment.cdate }}</div>
+							</div>
 						</div>
 					</div>
-				</div>
-			{% endfor %}
-		{% else %}
-			<div class="col-md-4">还没有评论哦</div>
-		{% endif %}
-	</div>
+					{% endfor %}
+			{% else %}
+				<div class="">还没有评论哦</div>
+			{% endif %}
+		</div>
 	{% if user.is_authenticated %}
-		<div class="col-md-12">
+		<div class="col-md-8">
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<textarea id="input-comment" class="form-control" maxlength="400"
@@ -114,7 +117,7 @@
 			</div>
 		</div>
 	{% endif %}
-</div>
+
 </div>
 {% endblock %}
 {% block extrascripts %}
