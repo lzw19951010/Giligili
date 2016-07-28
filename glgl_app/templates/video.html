@@ -10,7 +10,7 @@
 			<div class="col-md-8">
 				<div class="info">
 					<div class="video-title"><h2>{{ video.title }}</h2></div>
-					 <div style="clear:both;"></div>
+					<div style="clear:both;"></div>
 					<div class="tminfo"><a href="/">主页</a> >
 					{% for ca in video.category_set.all %}
 						<a href="/category/{{ ca.pk }}">{{ ca.name }}{% if not forloop.last %},{% endif %}</a>
@@ -18,19 +18,19 @@
 					&nbsp;&nbsp;&nbsp;
 					<i id="dianji" title="播放">{{ video.play }}</i>
 					&nbsp;&nbsp;&nbsp;
-					<span>上传时间：{{ video.time|date:"Y年m月d日" }}{{ video_type }}</span>
+					<span>上传时间：{{ video.time|date:"Y年m月d日" }}, 视频类型：{{ video_type }}</span>
 				</div>
-				 <div style="clear:both;"></div>
+				<div style="clear:both;"></div>
 			</div>
 			<div class="player">
 				<div id="video-id" style="display: none;">{{ video.pk }}</div>
 				<video id="video" class="video-js vjs-default-skin vjs-big-play-centered" controls="controls" preload="auto"
 					width="640" height="400" data-setup='{"playbackRates": [1, 1.5, 2]}' poster='/media/{{video.cover}}'>
-				{% if video_type == 'mp4' %}
-					<source src="{{ video.video.url }}" type='video/mp4'/>
-				{% else %}
-					<source src="{{ video.video.url }}" type='video/flv'/>
-				{% endif %}
+					{% if video_type == 'mp4' %}
+						<source src="{{ video.video.url }}" type='video/mp4'/>
+					{% else %}
+						<source src="{{ video.video.url }}" type='video/flv'/>
+					{% endif %}
 					<p class="vjs-no-js">
 						To view this video please enable JavaScript, and consider upgrading to a
 						web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports
@@ -39,9 +39,10 @@
 				</video>
 			</div>
 			{% if user.is_authenticated %}
-			<div class="col-sm-3 col-md-3 box-admin">
-				<button type="button" class="btn" id="btn-like">点赞</button>
-			</div>
+				<div class="col-sm-3 col-md-3 box-admin">
+					<div class="glyphicon glyphicon-heart" aria-hidden="true" style = "cursor: pointer" onclick="likethis(this)"></div>
+					<div>点赞数：<span id = "likenum">{{video.like}}</span></div>
+				</div>
 			{% endif %}
 			<div class="col-sm-3 col-md-3 box-admin">
 				{% if user.is_staff %}
@@ -68,29 +69,25 @@
 					</a>
 					<div class="r-info">
 						<div class="usname"><a href="/homepage/{{ video.uploader.id }}"
-						class="name">{{ video.uploader.nickName }}</a></div>
-						<div class="sign">{{ video.uploader.userextraprofile.UDescription }}</div>
+						class="name">{{ video.uploader.username }} {{ video.uploader.userextraprofile.description}}</a></div>
+						<div class="sign">{{ video.uploader.userextraprofile.description }}</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4" >评论区title-无样式<a href = 'morecomments/'>view more</a></div>
+		<div class="col-sm-5" >评论区<a href = 'morecomments/'>view more</a>
 		{% if latest_comment %}
 			{% for comment in latest_comment %}
-				<div class="col-md-4">
-					<div class="panel panel-default">
-						<div class="panel-body">
-							<a href="#">
-								<div class="u-face"><img
-									src={{video.uploader.image}}>
-								</div>
-							</a>
-							<div class="r-info">
-								<div class="usname"><a href="/homepage/{{ video.uploader.id }}"
-								class="name">{{ comment.user.nickName }}</a></div>
-								<div class="sign">{{ comment.content }}</div>
-								<div class="sign">{{ comment.cdate }}</div>
-							</div>
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<a href="#">
+							<div class="u-face"><img src={{video.uploader.image}}> </div>
+						</a>
+						<div class="r-info">
+							<div class="usname"><a href="/homepage/{{ comment.user.id }}"
+							class="name">{{ comment.user.userextraprofile.nickName }}</a></div>
+							<div class="sign">{{ comment.content }}</div>
+							<div class="sign">{{ comment.cdate }}</div>
 						</div>
 					</div>
 				</div>
@@ -98,48 +95,52 @@
 		{% else %}
 			<div class="col-md-4">还没有评论哦</div>
 		{% endif %}
-		{% if user.is_authenticated %}
+	</div>
+	{% if user.is_authenticated %}
 		<div class="col-md-12">
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<textarea id="input-comment" class="form-control" maxlength="400"
-                                      placeholder="留下你的脚印吧~不要超过400字哦"
-                                      aria-describedby="basic-addon1"></textarea>
-                            <div class="right">
-                                <button id="send-comment" class="btn btn-info bullet-send-btn">发送</button>
-                            </div>		
+					placeholder="留下你的脚印吧~不要超过400字哦"
+					aria-describedby="basic-addon1"></textarea>
+					<div class="right">
+						<button id="send-comment" class="btn btn-info bullet-send-btn">发送</button>
+					</div>
 				</div>
 			</div>
 		</div>
-		{% endif %}
-	</div>
+	{% endif %}
+</div>
 </div>
 {% endblock %}
 {% block extrascripts %}
 <!--<script type="text/javascript" src="http://vjs.zencdn.net/5.10.7/video.js"></script>-->
 <script src="/static/js/video.js"></script>
 <script src="/static/js/ajax-send.js"></script>
-
 <script>
 function passvideo(){
 	$.post("passvideo/",function(data){
-		document.getElementById('checkmsg').innerHTML='视频已通过';
+		layer.msg('视频已通过');
 	});
 }
 function banvideo(){
 	$.post("banvideo/",function(data){
-		document.getElementById('checkmsg').innerHTML='视频已封禁';
+		layer.msg('视频已封禁');
 	});
 }
+function likethis(){
+	$.post('likethis/',function(data){
+		layer.msg('您已点赞')
+		document.getElementById("likenum").innerHTML = data.like;
+	})
+}
 </script>
-
 <script>
 (function(){
 	
 	var send_btn = $('#send-comment');
 	var comment_input = $('#input-comment');
 	var video_id = $('#video-id');
-
 	send_btn.click(function(){
 		$.post('/send-comment/',{
 			'video' : video_id.html(),
@@ -147,7 +148,7 @@ function banvideo(){
 		},function(){});
 		comment_input.val('')
 		layer.msg('评论成功');
-	}) 
+	})
 })();
 </script>
 {% endblock %}

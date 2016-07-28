@@ -27,7 +27,7 @@ class Video(models.Model):
 	category = models.IntegerField(default = 0)
 	categoryName = models.CharField(max_length=20,default='')
 	play = models.IntegerField(default=0)
-	money = models.IntegerField(default=0)
+	like = models.IntegerField(default=0)
 	time = models.DateTimeField(auto_now=False, auto_now_add=True)
 	status = models.IntegerField(default=0)
 
@@ -43,6 +43,8 @@ class Comment(models.Model):
 	like = models.IntegerField(default = 0)
 	content = models.CharField (max_length = 100)
 	cdate = models.DateTimeField(default=timezone.now) 
+	def __str__(self):
+		return self.user.username
 	
 
 class Notification(models.Model):
@@ -165,6 +167,7 @@ def profile(request, error_msg=''):
 						error_msg = "请输入个人描述"
 					else:
 						input_is_valid = True
+						print(dir(user))
 						profile = user.userextraprofile
 						profile.nickName = nickname
 						profile.description = description

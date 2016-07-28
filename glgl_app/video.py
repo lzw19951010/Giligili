@@ -59,3 +59,13 @@ def video_comment_add(request):
     else:
         return JsonResponse(data={'res': False,
                                   'error': '用户没有权限！'})
+
+@require_http_methods(["POST"])
+def like(request, video_id):
+    try:
+        video = Video.objects.get(pk=video_id)
+    except Video.DoesNotExist:
+        return Http404("Video not found")
+    video.like += 1
+    video.save()
+    return JsonResponse(data={'like': video.like})

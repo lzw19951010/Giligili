@@ -18,6 +18,7 @@ from django.contrib import admin
 from glgl_app import views as glgl_app_views
 from glgl_app import models as glgl_app_models
 from glgl_app import video as glgl_app_video
+from glgl_app import search as glgl_app_search
 import glgl.settings as settings
 urlpatterns = [
 	url(r'^admin/', admin.site.urls),
@@ -39,10 +40,14 @@ urlpatterns = [
     url(r'^video/(?P<video_id>[0-9]+)/', include([
         url(r'^$', glgl_app_video.video_play),
         url(r'^passvideo/$', glgl_app_video.video_pass),
-        url(r'^banvideo/$', glgl_app_video.video_ban)
+        url(r'^banvideo/$', glgl_app_video.video_ban),
+        url(r'^likethis/$', glgl_app_video.like)
     ])),
 	url(r'(?P<video_id>[0-9]+)/morecomments/$',glgl_app_views.more_comments),
 	url(r'^send-comment/$',glgl_app_video.video_comment_add),
 	url(r'(?P<video_id>[0-9]+)/comment$',glgl_app_models.commitComment),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    url(r'^search/$', glgl_app_search.search_html),
+    url(r'^search/request/$', glgl_app_search.search),
+    url(r'^search/resulthtml/$', glgl_app_search.search_html),
 ]
