@@ -150,7 +150,7 @@ def aboutus(request):
   - 许骏洲
 	  - 邮箱: <xuxu9110@163.com>
 	  - 学号: 2014013465
--GITHUB
+- GITHUB
   -<https://github.com/lzw19951010/giligili>
   
 -团队分工
