@@ -1,10 +1,13 @@
 {% extends "base.html" %}
-{% load thumbnail %}
+
 {% block title %}{{pageTitle}}{% endblock %}
+
 {% block extracss %}
 	<link href="/static/css/index.css" rel="stylesheet">
 {% endblock %}
+
 {% block content %}
+
 	{% if popular_videos or pageTitle == '首页' %}
 	<!-- Main jumbotron for a primary marketing message or call to action -->
 	<div id="myCarousel" class="carousel slide">
@@ -49,6 +52,7 @@
 			</figure>
 		</div>
 		{% endfor %}
+
 	{% else %}
 		{% for video in category_videos %}
 		<div class="col-md-3 col-sm-6 col-xs-12 dd-grid">
@@ -62,5 +66,7 @@
 			</figure>
 		</div>
 		{% endfor %}
+		
 	{% endif %}
+
 {% endblock %}

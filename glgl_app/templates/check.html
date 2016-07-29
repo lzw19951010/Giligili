@@ -1,13 +1,16 @@
 {% extends "base.html" %}
-{% load thumbnail %}
+
 {% block title %}视频审核列表{% endblock %}
+
 {% block extracss %}
 	<link href="/static/css/index.css" rel="stylesheet">
 {% endblock %}
+
 {% block content %}
 	<div>
 		<h2>待审核视频</h2>
 	</div>
+
 	{% for video in checking_videos %}
 	<div class="col-md-3 col-sm-6 col-xs-12 dd-grid">
 		<figure class="effect-sadie">
@@ -20,4 +23,5 @@
 		</figure>
 	</div>
 	{% endfor %}
+	
 {% endblock %}

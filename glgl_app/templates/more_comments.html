@@ -8,18 +8,17 @@
 	<div class="dd-video">
 		<div class = "col-md-8">
 			<div class="info">
-					<div class="video-title"><h2>{{ video.title }}</h2></div>
-					 <div style="clear:both;"></div>
-					<div class="tminfo"><a href="/">主页</a> >
-					{% for ca in video.category_set.all %}
-						<a href="/category/{{ ca.pk }}">{{ ca.name }}{% if not forloop.last %},{% endif %}</a>
-					{% endfor %}
+				<div class="video-title"><h2>{{ video.title }}</h2></div>
+				<div style="clear:both;"></div>
+				<div class="tminfo"><a href="/">主页</a> > <a href="/category/{{video.category}}">{{ video.categoryName }}</a>
 					&nbsp;&nbsp;&nbsp;
 					<i id="dianji" title="播放">{{ video.play }}</i>
 					&nbsp;&nbsp;&nbsp;
-					<span>上传时间：{{ video.time|date:"Y年m月d日" }}{{ video_type }}</span>
+					<span>
+						上传时间：{{ video.time|date:"Y年m月d日" }}, 视频类型：{{ video_type }}
+					</span>
 				</div>
-				 <div style="clear:both;"></div>
+				<div style="clear:both;"></div>
 			</div>
 		</div>
 		<div class="col-md-4">
@@ -60,21 +59,6 @@
 		{% else %}
 			<div class="col-md-12">还没有评论哦</div>
 		{% endif %}
-		<!--
-		{% if user.is_authenticated %}
-		<div class="col-md-12">
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<textarea id="input-comment" class="form-control" maxlength="400"
-                                      placeholder="留下你的脚印吧~不要超过400字哦"
-                                      aria-describedby="basic-addon1"></textarea>
-                            <div class="right">
-                                <button id="send-comment" class="btn btn-info bullet-send-btn">发送</button>
-                            </div>		
-				</div>
-			</div>
-		</div>
-		{% endif %}-->
 		<div class="m-row" style="text-align: center">
 			<a href = "{{ video.get_absolute_url }}" class = "btn btn-default btn-lg" style="margin-top: 10px">返回</a>
 		</div>
@@ -82,7 +66,6 @@
 	</div>
 {% endblock %}
 {% block extrascripts %}
-<!--<script type="text/javascript" src="http://vjs.zencdn.net/5.10.7/video.js"></script>-->
 <script src="/static/js/video.js"></script>
 <script src="/static/js/ajax-send.js"></script>
 

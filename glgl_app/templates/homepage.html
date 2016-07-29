@@ -1,7 +1,7 @@
 {% extends "base.html" %}
+
 {% block title %}个人主页{% endblock %}
-{% block extracss %}
-{% endblock %}
+
 {% block content %}
     <div id="top_area">
         <div class="center">
@@ -13,24 +13,13 @@
                     <label>昵称：{{pageuser.userextraprofile.nickName}}</label>
                 </div>
             </div>
-            {% if user.is_authenticated and user.pk != pageuser.pk %}
-                <div class="row bar_buttons">
-                    <div class="col-sm-6 col-md-6 box-follow">
-                        {% if pageuser in user.userextraprofile.follow_users.all %}
-                            <button type="button" class="btn btn-default btn-follow" id="toggle-follow">取消关注</button>
-                        {% else %}
-                            <button type="button" class="btn btn-primary btn-follow" id="toggle-follow">关注</button>
-                        {% endif %}
-                    </div>
-                </div>
-            {% endif %}
         </div>
     </div>
     <div id="middle_content">
         <div class="row bar_content">
             <div class="col-sm-12 col-md-8 box-left">
                 <div class="panel panel-success">
-                    <div class="panel-heading">最新发布</div>
+                    <div class="panel-heading">该UP主上传的视频</div>
                     <div class="panel-body">
                         <div class="m-row">
                             {% if video_set %}
@@ -58,9 +47,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-{% block extrascripts %}
-    <!--<script type="text/javascript" src="/static/js/ajax-send.js"></script>
-    <script type="text/javascript" src="/static/js/personal-admin.js"></script>
-    <script type="text/javascript" src="/static/js/personal-follow.js"></script>-->
 {% endblock %}

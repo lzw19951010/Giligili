@@ -1,8 +1,11 @@
 {% extends "base.html" %}
+
 {% block title %}搜索{% endblock %}
+
 {% block extracss %}
 	<link href="/static/css/index.css" rel="stylesheet">
 {% endblock %}
+
 {% block content %}
 	<h3>搜索结果</h3>
 	{% for video in videos %}
