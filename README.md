@@ -150,5 +150,8 @@ def aboutus(request):
   - 许骏洲
 	  - 邮箱: <xuxu9110@163.com>
 	  - 学号: 2014013465
-- GITHUB
-  - https://github.com/lzw19951010/giligili 
+-GITHUB
+  -<https://github.com/lzw19951010/giligili>
+  
+-团队分工
+  依据功能模块的分工方式，三个人工作量基本均等，困难问题共通攻坚。由于公用账号以及调用库和框架的原因，代码量无法通过github直观显示。
